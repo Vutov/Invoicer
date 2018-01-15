@@ -1,0 +1,32 @@
+﻿@using Invoicer.Models.DbModels
+@model IEnumerable<Product>
+
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="text-center">№</th>
+            <th class="text-center">Код</th>
+            <th class="text-center">Наименование на стоката/услугата</th>
+            <th class="text-center">Мярка</th>
+            <th class="text-center">Количество</th>
+            <th class="text-center">Цена</th>
+            <th class="text-center">Сума</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in @Model)
+        {
+            <tr>
+                <td class="text-center">@product.ProductID</td>
+                <td class="text-center">@product.Code</td>
+                <td class="text-left">@product.Description</td>
+                <td class="text-center">@product.Measure</td>
+                <td class="text-right">@product.Quantity.ToString("F2")</td>
+                <td class="text-right">@product.PriceWithDiscout.ToString("F3")</td>
+                <td class="text-right">@product.TotalAmount.ToString("F2")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

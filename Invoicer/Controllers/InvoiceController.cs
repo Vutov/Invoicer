@@ -32,7 +32,7 @@ namespace Invoicer.Controllers
             {
                 Products = invoice.Products,
                 Client = invoice.Client,
-                Distributor = new Client(), // fix
+                Distributor = invoice.Client, // fix
                 InvoiceDate = DateTime.UtcNow, // fix
                 InvoiceNumber = 1, //fix
                 Vat = 20, //fix

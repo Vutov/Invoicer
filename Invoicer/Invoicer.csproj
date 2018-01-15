@@ -5,7 +5,6 @@
     <UserSecretsId>aspnet-Invoicer-66462920-23B1-4AEE-8437-BC09FA9288BD</UserSecretsId>
   </PropertyGroup>
 
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />

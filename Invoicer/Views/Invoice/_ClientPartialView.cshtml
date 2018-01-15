@@ -1,0 +1,43 @@
+﻿@using Invoicer.Models.DocModels
+@model Client
+
+<div>
+    <div class="row">
+        <div class="col-xs-3">Получател</div>
+        <div class="col-xs-9">@Model.Name</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">ДДС №</div>
+        <div class="col-xs-9">@Model.Vat</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Идент. №</div>
+        <div class="col-xs-9">
+            @{
+                var identity = Model.Vat;
+                if (string.IsNullOrEmpty(identity) == false && identity.ToLower().StartsWith("bg"))
+                {
+                    identity = identity.Substring(2);
+                }
+
+                @identity
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Град</div>
+        <div class="col-xs-9">TODO: @Model.Address.FirstOrDefault()?.Line</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Адрес</div>
+        <div class="col-xs-9">@string.Join(",", @Model.Address.Skip(1).ToList())</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">МОЛ</div>
+        <div class="col-xs-9">TODO</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Телефон</div>
+        <div class="col-xs-9">@Model.ConsultationNumber</div>
+    </div>
+</div>
