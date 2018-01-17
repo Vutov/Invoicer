@@ -17,14 +17,14 @@
     [Route("[controller]/[action]")]
     public class AccountController : BaseController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
 
         public AccountController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            _userManager = this.ServiceProvider.GetService<UserManager<ApplicationUser>>();
-            _signInManager = this.ServiceProvider.GetService<SignInManager<ApplicationUser>>();
+            _userManager = this.ServiceProvider.GetService<UserManager<User>>();
+            _signInManager = this.ServiceProvider.GetService<SignInManager<User>>();
             _logger = this.ServiceProvider.GetService<ILogger<AccountController>>();
         }
 
@@ -73,7 +73,7 @@
         {
             this.ViewData["ReturnUrl"] = returnUrl;
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new User { UserName = model.Email, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {

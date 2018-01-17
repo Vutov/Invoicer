@@ -12,6 +12,7 @@
     using Models.DbModels;
     using Models.DocModels;
 
+    // TODO town and MOL
     public class InvoiceService
     {
         private readonly VatService _vatService;

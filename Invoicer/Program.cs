@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Invoicer
 {
+    using Data;
+    using Extensions;
+    using Microsoft.Extensions.DependencyInjection;
     using Serilog;
     using Serilog.Debugging;
     using Serilog.Sinks.SystemConsole.Themes;
@@ -12,7 +15,16 @@ namespace Invoicer
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<InvoiceDbContext>();
+                context.Initialize(services);
+            }
+
+            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

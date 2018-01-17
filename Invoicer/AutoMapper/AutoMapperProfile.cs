@@ -11,6 +11,8 @@
             this.CreateMap<DocProduct, Product>()
                 .ForMember(x => x.ProductID, opts => opts.MapFrom(x => x.ID))
                 .ForMember(x => x.ID, opts => opts.Ignore());
+
+            this.CreateMap<Distributor, Client>();
         }
     }
 }

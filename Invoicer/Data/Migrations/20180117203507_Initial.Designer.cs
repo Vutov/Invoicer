@@ -11,9 +11,9 @@ using System;
 
 namespace Invoicer.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180114144025_Models")]
-    partial class Models
+    [DbContext(typeof(InvoiceDbContext))]
+    [Migration("20180117203507_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,22 +29,202 @@ namespace Invoicer.Data.Migrations
 
                     b.Property<int?>("ClientID");
 
-                    b.Property<DateTime>("CreationDate");
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<int?>("InvoiceID");
+                    b.Property<string>("Data");
 
-                    b.Property<string>("Line");
+                    b.Property<int?>("DistributorID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("ClientID");
 
-                    b.HasIndex("InvoiceID");
+                    b.HasIndex("DistributorID");
 
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("Invoicer.Models.DbModels.ApplicationUser", b =>
+            modelBuilder.Entity("Invoicer.Models.DbModels.Client", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConsultationNumber");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<bool>("EnterManualy");
+
+                    b.Property<DateTime>("RequestDate");
+
+                    b.Property<string>("Vat");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.Distributor", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConsultationNumber");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Vat");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Distributors");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.Invoice", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientID");
+
+                    b.Property<string>("CreatedById");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<int>("CurrencyID");
+
+                    b.Property<int?>("DistributorID");
+
+                    b.Property<DateTime>("DocumentDate");
+
+                    b.Property<string>("DocumentID");
+
+                    b.Property<string>("Weight");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ClientID");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DistributorID");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.Name", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientID");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Data");
+
+                    b.Property<int?>("DistributorID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ClientID");
+
+                    b.HasIndex("DistributorID");
+
+                    b.ToTable("Name");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.PaymentDetail", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BankCode");
+
+                    b.Property<string>("BankName");
+
+                    b.Property<int?>("ClientID");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("IBAN");
+
+                    b.Property<string>("PaymentType");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ClientID");
+
+                    b.ToTable("PaymentDetail");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.Product", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Code");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Discount");
+
+                    b.Property<int?>("InvoiceID");
+
+                    b.Property<string>("Measure");
+
+                    b.Property<string>("Note");
+
+                    b.Property<double>("Price");
+
+                    b.Property<double>("PriceWithDiscout");
+
+                    b.Property<int>("ProductID");
+
+                    b.Property<double>("Quantity");
+
+                    b.Property<double>("TotalAmount");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("InvoiceID");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.ResponsiblePerson", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ClientID");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Data");
+
+                    b.Property<int?>("DistributorID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ClientID");
+
+                    b.HasIndex("DistributorID");
+
+                    b.ToTable("ResponsiblePerson");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -93,83 +273,6 @@ namespace Invoicer.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("Invoicer.Models.DbModels.Invoice", b =>
-                {
-                    b.Property<int>("ID");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<int>("CurrencyID");
-
-                    b.Property<DateTime>("DocumentDate");
-
-                    b.Property<string>("DocumentID");
-
-                    b.Property<string>("Weight");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Invoices");
-                });
-
-            modelBuilder.Entity("Invoicer.Models.DbModels.Product", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Code");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Discount");
-
-                    b.Property<int?>("InvoiceID");
-
-                    b.Property<string>("Measure");
-
-                    b.Property<string>("Note");
-
-                    b.Property<double>("Price");
-
-                    b.Property<double>("PriceWithDiscout");
-
-                    b.Property<int>("ProductID");
-
-                    b.Property<double>("Quantity");
-
-                    b.Property<double>("TotalAmount");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("InvoiceID");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Invoicer.Models.DocModels.Client", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ConsultationNumber");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<bool>("EnterManualy");
-
-                    b.Property<string>("Name");
-
-                    b.Property<DateTime>("RequestDate");
-
-                    b.Property<string>("Vat");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -282,21 +385,46 @@ namespace Invoicer.Data.Migrations
 
             modelBuilder.Entity("Invoicer.Models.DbModels.Address", b =>
                 {
-                    b.HasOne("Invoicer.Models.DocModels.Client")
+                    b.HasOne("Invoicer.Models.DbModels.Client")
                         .WithMany("Address")
                         .HasForeignKey("ClientID");
 
-                    b.HasOne("Invoicer.Models.DbModels.Invoice", "Invoice")
-                        .WithMany()
-                        .HasForeignKey("InvoiceID");
+                    b.HasOne("Invoicer.Models.DbModels.Distributor")
+                        .WithMany("Address")
+                        .HasForeignKey("DistributorID");
                 });
 
             modelBuilder.Entity("Invoicer.Models.DbModels.Invoice", b =>
                 {
-                    b.HasOne("Invoicer.Models.DocModels.Client", "Client")
-                        .WithOne("Invoice")
-                        .HasForeignKey("Invoicer.Models.DbModels.Invoice", "ID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Invoicer.Models.DbModels.Client", "Client")
+                        .WithMany("Invoices")
+                        .HasForeignKey("ClientID");
+
+                    b.HasOne("Invoicer.Models.DbModels.User", "CreatedBy")
+                        .WithMany("Invoices")
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Invoicer.Models.DbModels.Distributor", "Distributor")
+                        .WithMany("Invoices")
+                        .HasForeignKey("DistributorID");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.Name", b =>
+                {
+                    b.HasOne("Invoicer.Models.DbModels.Client")
+                        .WithMany("Name")
+                        .HasForeignKey("ClientID");
+
+                    b.HasOne("Invoicer.Models.DbModels.Distributor")
+                        .WithMany("Name")
+                        .HasForeignKey("DistributorID");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.PaymentDetail", b =>
+                {
+                    b.HasOne("Invoicer.Models.DbModels.Distributor", "Client")
+                        .WithMany("PaymentDetails")
+                        .HasForeignKey("ClientID");
                 });
 
             modelBuilder.Entity("Invoicer.Models.DbModels.Product", b =>
@@ -304,6 +432,17 @@ namespace Invoicer.Data.Migrations
                     b.HasOne("Invoicer.Models.DbModels.Invoice", "Invoice")
                         .WithMany("Products")
                         .HasForeignKey("InvoiceID");
+                });
+
+            modelBuilder.Entity("Invoicer.Models.DbModels.ResponsiblePerson", b =>
+                {
+                    b.HasOne("Invoicer.Models.DbModels.Client")
+                        .WithMany("Responsibles")
+                        .HasForeignKey("ClientID");
+
+                    b.HasOne("Invoicer.Models.DbModels.Distributor")
+                        .WithMany("Responsibles")
+                        .HasForeignKey("DistributorID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -316,7 +455,7 @@ namespace Invoicer.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Invoicer.Models.DbModels.ApplicationUser")
+                    b.HasOne("Invoicer.Models.DbModels.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -324,7 +463,7 @@ namespace Invoicer.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Invoicer.Models.DbModels.ApplicationUser")
+                    b.HasOne("Invoicer.Models.DbModels.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -337,7 +476,7 @@ namespace Invoicer.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Invoicer.Models.DbModels.ApplicationUser")
+                    b.HasOne("Invoicer.Models.DbModels.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -345,7 +484,7 @@ namespace Invoicer.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Invoicer.Models.DbModels.ApplicationUser")
+                    b.HasOne("Invoicer.Models.DbModels.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

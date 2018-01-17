@@ -64,10 +64,10 @@
 
             if (isValid)
             {
-                client.Name = new List<Name>(){new Name(){Line = GetValue("Name") } };
+                client.Name = new List<Name>(){new Name(){Data = GetValue("Name") } };
                 client.Address = GetValue("Address")
                     .Split("<br>", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(d => new Address() { Line = d })
+                    .Select(d => new Address() { Data = d })
                     .ToList();
                 client.ConsultationNumber = GetValue("Consultation Number");
             }

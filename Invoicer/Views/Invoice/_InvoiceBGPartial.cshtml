@@ -1,5 +1,30 @@
-﻿@using Invoicer.Models.ViewModels.InvoiceViewModels
+﻿@using Invoicer.Models.DbModels
+@using Invoicer.Models.ViewModels.InvoiceViewModels
 @model InvoiceViewModel
+@{
+    string GetIdentityNumber(string identity)
+    {
+        var i = identity;
+        if (string.IsNullOrEmpty(i) == false && i.ToLower().StartsWith("bg"))
+        {
+            i = i.Substring(2);
+        }
+
+        return i;
+    }
+
+    (string, string) GetAddressLines(List<Address> address)
+    {
+        var hasTown = address.Count > 1;
+        var skip = hasTown ? 1 : 0;
+        var town = string.Empty;
+        if (hasTown)
+        {
+            town = address.FirstOrDefault()?.Data;
+        }
+        return (town, string.Join(",", address.Skip(skip).Select(d => d.Data).ToList()));
+    }
+}
 
 <div class="container">
     <h1 class="text-center">Фактура</h1>
@@ -17,15 +42,133 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6 border">
-            @await Html.PartialAsync("_ClientPartialView", @Model.Client)
-        </div>
-        <div class="col-xs-6 border">
-            @await Html.PartialAsync("_ClientPartialView", @Model.Distributor)
-        </div>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Получател</div>
+                        <div class="col-xs-9">
+                            @foreach (var name in @Model.Client.Name)
+                            {
+                                <div>@name.Data</div>
+                            }
+                        </div>
+                    </td>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Доставчик</div>
+                        <div class="col-xs-9">
+                            @foreach (var name in @Model.Distributor.Name)
+                            {
+                                <div>@name.Data</div>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">ДДС №</div>
+                        <div class="col-xs-9">@Model.Client.Vat</div>
+                    </td>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">ДДС №</div>
+                        <div class="col-xs-9">@Model.Distributor.Vat</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Идент. №</div>
+                        <div class="col-xs-9">@GetIdentityNumber(Model.Client.Vat)</div>
+                    </td>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Идент. №</div>
+                        <div class="col-xs-9">@GetIdentityNumber(Model.Distributor.Vat)</div>
+                    </td>
+                </tr>
+                <tr>
+                    @{
+                        var clientAddress = GetAddressLines(@Model.Client.Address.ToList());
+                        var distributorAddress = GetAddressLines(@Model.Distributor.Address.ToList());
+                    }
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Град</div>
+                        <div class="col-xs-9">@clientAddress.Item1</div>
+                    </td>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Град</div>
+                        <div class="col-xs-9">@distributorAddress.Item1</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Адрес</div>
+                        <div class="col-xs-9">@clientAddress.Item2</div>
+                    </td>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Адрес</div>
+                        <div class="col-xs-9">@distributorAddress.Item2</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">МОЛ</div>
+                        <div class="col-xs-9">
+                            @foreach (var person in @Model.Client.Responsibles)
+                            {
+                                <div>@person.Data</div>
+                            }
+                        </div>
+                    </td>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">МОЛ</div>
+                        <div class="col-xs-9">
+                            @foreach (var person in @Model.Distributor.Responsibles)
+                            {
+                                <div>@person.Data</div>
+                            }
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Телефон</div>
+                        <div class="col-xs-9">@Model.Client.ConsultationNumber</div>
+                    </td>
+                    <td class="col-xs-6">
+                        <div class="col-xs-3">Телефон</div>
+                        <div class="col-xs-9">@Model.Distributor.ConsultationNumber</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="row">
-        @await Html.PartialAsync("_ProductTablePartialVIew", @Model.Products)
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">№</th>
+                    <th class="text-center">Код</th>
+                    <th class="text-center">Наименование на стоката/услугата</th>
+                    <th class="text-center">Мярка</th>
+                    <th class="text-center">Количество</th>
+                    <th class="text-center">Цена</th>
+                    <th class="text-center">Сума</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in @Model.Products)
+                {
+                    <tr>
+                        <td class="text-center">@product.ProductID</td>
+                        <td class="text-center">@product.Code</td>
+                        <td class="text-left">@product.Description</td>
+                        <td class="text-center">@product.Measure</td>
+                        <td class="text-right">@product.Quantity.ToString("F2")</td>
+                        <td class="text-right">@product.PriceWithDiscout.ToString("F3")</td>
+                        <td class="text-right">@product.TotalAmount.ToString("F2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
         <div class="col-xs-4 col-xs-offset-8">
             @{
                 var totalAmount = @Model.Products.Sum(p => p.TotalAmount);
@@ -46,21 +189,78 @@
             }
         </div>
         <div class="row">
-            <div class="col-xs-1">Словом:</div>
+            <div class="col-xs-1 alert-danger">Словом:</div>
             <div class="col-xs-11">TODO slovom</div>
         </div>
         <div class="row">
-            table
-        </div>
-        <div class="row">
-            <div class="col-xs-7">
-                <div class="col-xs-2 text-left no-padding-left">Получил:</div>
-                <div class="col-xs-10 text-left no-padding-left">TODO Model MOL</div>
-            </div>
-            <div class="col-xs-5">
-                <div class="col-xs-4 text-right">Съставил:</div>
-                <div class="col-xs-8 text-left">TODO Model MOL</div>
-            </div>
+            <table class="table">
+                <tbody>
+                    @{
+                        var paymentDetails = @Model.Distributor.PaymentDetails.First();
+                    }
+                    <tr>
+                        <td class="col-xs-7">
+                            <div class="col-xs-5 text-left">Дата на данъчно събитие:</div>
+                            <div class="col-xs-7 text-left">@Model.InvoiceDate.ToString("dd.MM.yyyy")</div>
+                        </td>
+                        <td class="col-xs-5">
+                            <div class="col-xs-4 text-left">Плащане:</div>
+                            <div class="col-xs-8 text-left">@paymentDetails.PaymentType</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-7">
+                            <div class="col-xs-5 text-left">Основание на сделката:</div>
+                            <div class="col-xs-7 text-left"></div>
+                        </td>
+                        <td class="col-xs-5">
+                            <div class="col-xs-4 text-left">IBAN:</div>
+                            <div class="col-xs-8 text-left">@paymentDetails.IBAN</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-7">
+                            <div class="col-xs-5 text-left">Описание на сделката:</div>
+                            <div class="col-xs-7 text-left"></div>
+                        </td>
+                        <td class="col-xs-5">
+                            <div class="col-xs-4 text-left">Банка:</div>
+                            <div class="col-xs-8 text-left">@paymentDetails.BankName</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-7">
+                            <div class="col-xs-5 text-left">Място на сделката:</div>
+                            <div class="col-xs-7 text-left"></div>
+                        </td>
+                        <td class="col-xs-5">
+                            <div class="col-xs-4 text-left">Банков код:</div>
+                            <div class="col-xs-8 text-left">@paymentDetails.BankCode</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-xs-7">
+                            <div class="col-xs-2 text-left">Получил:</div>
+                            <div class="col-xs-10 text-left">
+                                @foreach (var person in @Model.Client.Responsibles)
+                                {
+                                    <div>@person.Data</div>
+                                }
+                            </div>
+                        </td>
+                        <td class="col-xs-5">
+                            <div class="col-xs-4 text-left">Съставил:</div>
+                            <div class="col-xs-8 text-left">
+                                @foreach (var person in @Model.Distributor.Responsibles)
+                                {
+                                    <div>@person.Data</div>
+                                }
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="row">
             <div class="col-xs-12">Съгласно чл.6, ал. 1 от Закона за счетоводството, чл 114 от ЗДДС и чл. 78 от ППЗДДС печатът и подписът не са задължителни реквизити във фактурата.</div>

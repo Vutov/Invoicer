@@ -8,8 +8,7 @@ namespace Invoicer.Models.DbModels
     public class Name
     {
         public int ID { get; set; }
-        public string Line { get; set; }
-        public Client Client { get; set; }
+        public string Data { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationDate { get; set; }
     }
