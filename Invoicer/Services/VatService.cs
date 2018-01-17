@@ -64,7 +64,7 @@
 
             if (isValid)
             {
-                client.Name = GetValue("Name");
+                client.Name = new List<Name>(){new Name(){Line = GetValue("Name") } };
                 client.Address = GetValue("Address")
                     .Split("<br>", StringSplitOptions.RemoveEmptyEntries)
                     .Select(d => new Address() { Line = d })
