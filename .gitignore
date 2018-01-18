@@ -270,3 +270,4 @@ __pycache__/
 #word
 *.doc
 *.docx
+[Ss]ensitive/

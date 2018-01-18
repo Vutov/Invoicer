@@ -18,15 +18,7 @@
             }
 
            // TODO Sensitive data
-            context.SaveChanges();
-
-            // TODO Working?
-            User user = new User();
-            user.UserName = "Admin@admin";
-            user.Email = "Admin@admin";
-
-            var userManager = provider.GetService<UserManager<User>>();
-            IdentityResult result = userManager.CreateAsync(user, "Zaq123$").Result;
+           
 
             return context;
         }
