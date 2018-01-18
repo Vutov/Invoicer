@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Identity;
     using Models.DbModels;
 
-    public partial class SeedService
+    public partial class SeedService: ISeedService
     {
         public void Seed(InvoiceDbContext context, UserManager<User> userManager)
         {

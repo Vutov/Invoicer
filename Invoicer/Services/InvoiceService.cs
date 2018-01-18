@@ -13,7 +13,7 @@
     using Models.DocModels;
 
     // TODO town and MOL
-    public class InvoiceService
+    public class InvoiceService: IInvoiceService
     {
         private readonly VatService _vatService;
 

@@ -9,7 +9,7 @@
     using Models.DbModels;
     using Models.DocModels;
 
-    public class VatService
+    public class VatService: IVatService
     {
         public async Task<Client> GetClient(string vat)
         {

@@ -10,6 +10,7 @@ namespace Invoicer
     using Data;
     using global::AutoMapper;
     using Models.DbModels;
+    using Services;
 
     public class Startup
     {
@@ -32,6 +33,10 @@ namespace Invoicer
                 .AddDefaultTokenProviders();
             
             services.AddMvc();
+
+            services.AddTransient<ISeedService, SeedService>();
+            services.AddTransient<IInvoiceService, InvoiceService>();
+            services.AddTransient<IVatService, VatService>();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -7,3 +7,4 @@
     $("#html", "#pdfInvoiceBg").val(payload);
     $("#pdfInvoiceBg").submit();
 });
+// TODO Footer with github etc

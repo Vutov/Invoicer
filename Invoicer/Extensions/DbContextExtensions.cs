@@ -1,24 +1,19 @@
 ﻿namespace Invoicer.Extensions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Data;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
     using Models.DbModels;
+    using Services;
 
     public static class DbContextExtensions
     {
         public static InvoiceDbContext Initialize(this InvoiceDbContext context, IServiceProvider provider)
         {
-            if (context.Distributors.Any())
-            {
-                return context;
-            }
-
-           // TODO Sensitive data
-           
+            var seeder = provider.GetService<ISeedService>();
+            var userManager = provider.GetService<UserManager<User>>();
+            seeder.Seed(context, userManager);
 
             return context;
         }
