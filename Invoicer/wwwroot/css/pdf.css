@@ -4,3 +4,19 @@
     border-color: #000000;
     border: 1px solid;
 }
+
+/*flex-basis not working*/
+.smaller-flex {
+    max-width: 49%;
+}
+
+/*rounding of borders breaks pdf borders*/
+.rounded-top {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+.rounded-bottom {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}

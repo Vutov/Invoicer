@@ -50,9 +50,9 @@
     </div>
 
     <div class="container mt-3">
-        <div class="row">
-            <div class="col-6">
-                <div class="row mr-auto border-dark border-right border-left h-100 border-top rounded-top ">
+        <div class="row justify-content-between">
+            <div class="col-6 border-dark border-right border-left smaller-flex border-top rounded-top">
+                <div class="row">
                     <div class="col-3">Получател</div>
                     <div class="col-9">
                         @foreach (var name in @Model.Client.Name)
@@ -62,8 +62,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="row ml-auto border-dark border-left border-right h-100 border-top rounded-top ">
+            <div class="col-6 border-dark border-right border-left smaller-flex border-top rounded-top">
+                <div class="row">
                     <div class="col-3">Доставчик</div>
                     <div class="col-9">
                         @foreach (var name in @Model.Distributor.Name)
@@ -74,69 +74,69 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="row mr-auto border-dark border-right border-left h-100">
+        <div class="row justify-content-between">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">ДДС №</div>
                     <div class="col-9">@Model.Client.Vat</div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="row ml-auto border-dark border-right border-left h-100">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">ДДС №</div>
                     <div class="col-9">@Model.Distributor.Vat</div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="row mr-auto border-dark border-right border-left h-100">
+        <div class="row justify-content-between">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">Идент. №</div>
                     <div class="col-9">@GetIdentityNumber(Model.Client.Vat)</div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="row ml-auto border-dark border-right border-left h-100">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">Идент. №</div>
                     <div class="col-9">@GetIdentityNumber(Model.Distributor.Vat)</div>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row justify-content-between">
             @{
                 var clientAddress = GetAddressLines(@Model.Client.Address.ToList());
                 var distributorAddress = GetAddressLines(@Model.Distributor.Address.ToList());
             }
-            <div class="col-6">
-                <div class="row mr-auto border-dark border-right border-left h-100">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">Град</div>
                     <div class="col-9">@clientAddress.Item1</div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="row ml-auto border-dark border-right border-left h-100">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">Град</div>
                     <div class="col-9">@distributorAddress.Item1</div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="row mr-auto border-dark border-right border-left h-100">
+        <div class="row justify-content-between">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">Адрес</div>
                     <div class="col-9">@clientAddress.Item2</div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="row ml-auto border-dark border-right border-left h-100">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">Адрес</div>
                     <div class="col-9">@distributorAddress.Item2</div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="row mr-auto border-dark border-right border-left h-100">
+        <div class="row justify-content-between">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">МОЛ</div>
                     <div class="col-9">
                         @foreach (var person in @Model.Client.Responsibles)
@@ -146,8 +146,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="row ml-auto border-dark border-right border-left h-100">
+            <div class="col-6 border-dark border-right border-left smaller-flex">
+                <div class="row">
                     <div class="col-3">МОЛ</div>
                     <div class="col-9">
                         @foreach (var person in @Model.Distributor.Responsibles)
@@ -158,15 +158,15 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <div class="row mr-auto border-dark border-right border-left h-100 border-bottom rounded-bottom">
+        <div class="row justify-content-between">
+            <div class="col-6 border-dark border-right border-left smaller-flex border-bottom rounded-bottom">
+                <div class="row">
                     <div class="col-3">Телефон</div>
                     <div class="col-9">@Model.Client.ConsultationNumber</div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="row ml-auto border-dark border-right border-left h-100 border-bottom rounded-bottom">
+            <div class="col-6 border-dark border-right border-left smaller-flex border-bottom rounded-bottom">
+                <div class="row">
                     <div class="col-3">Телефон</div>
                     <div class="col-9">@Model.Distributor.ConsultationNumber</div>
                 </div>

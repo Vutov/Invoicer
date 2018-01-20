@@ -20,3 +20,10 @@
 .copy-size {
     font-size: 1.4rem;
 }
+
+.smaller-flex {
+    -ms-flex-basis: 49%;
+    -o-flex-basis: 49%;
+    -webkit-flex-basis: 49%;
+    flex-basis: 49%;
+}
