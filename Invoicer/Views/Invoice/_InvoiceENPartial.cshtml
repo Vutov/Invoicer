@@ -1,0 +1,207 @@
+﻿@using Invoicer.Models.DbModels
+@using Invoicer.Models.ViewModels.InvoiceViewModels
+@model InvoiceViewModel
+
+@{
+
+    (string, string) GetAddressLines(List<Address> address)
+    {
+        var hasTown = address.Count > 1;
+        var skip = hasTown ? 1 : 0;
+        var town = string.Empty;
+        if (hasTown)
+        {
+            town = address.FirstOrDefault()?.Data;
+        }
+        return (town, string.Join(",", address.Skip(skip).Select(d => d.Data).ToList()));
+    }
+}
+
+@using (Html.BeginForm("PDF", "Invoice", new { }, FormMethod.Post, true, new { id = "pdfInvoiceEn" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("html")
+    <button id="btnSaveEn" type="button" class="btn btn-primary">Save</button>
+}
+
+<div id="invoiceEn" class="container border">
+    <div class="container">
+        <div class="row">
+            <div class="col-7 font-weight-bold">@Model.Distributor.Name.First().Data</div>
+            <div class="col-5 text-center"><h2>Invoice</h2></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-7">
+                @{var distributorAddress = GetAddressLines(@Model.Distributor.Address.ToList());}
+                <div class="row">
+                    <div class="col-12 font-weight-bold">@Model.Distributor.Responsibles.First().Data</div>
+                </div>
+                <div class="row">
+                    <div class="col-12 font-weight-bold">@distributorAddress.Item2</div>
+                </div>
+                <div class="row">
+                    <div class="col-12 font-weight-bold">@distributorAddress.Item1</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        Phone:
+                        <span class="font-weight-bold">@Model.Distributor.ConsultationNumber</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        VAT Number:
+                        <span class="font-weight-bold">@Model.Distributor.Vat</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <div class="col-8 text-right">Invoice No:</div>
+                    <div class="col-4 text-right font-weight-bold pr-0">@Model.InvoiceNumber.ToString("0000000000")</div>
+                </div>
+                <div class="row">
+                    <div class="col-8 text-right">Date:</div>
+                    <div class="col-4 text-right font-weight-bold pr-0">@Model.InvoiceDate.ToString("dd.MM.yyyy")</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2 container">
+        <div class="row justify-content-between">
+            <div class="col-6 border-dark border rounded smaller-flex">
+                <div class="row">
+                    <div class="col-2 pr-0">Bill To:</div>
+                    <div class="col-10 text-left font-weight-bold">
+                        <div class="row">
+                            <div class="col-12 mb-3">@Model.Client.Name.First().Data</div>
+                        </div>
+                        @foreach (var address in Model.Client.Address)
+                        {
+                            <div class="row">
+                                <div class="col-12">@address.Data</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        Phone:
+                        <span class="font-weight-bold pl-4">@Model.Client.ConsultationNumber</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        VAT Number:
+                        <span class="font-weight-bold pl-2">@Model.Client.Vat</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 border-dark border rounded smaller-flex">
+                <div class="row">
+                    <div class="col-2 pr-0">Ship To:</div>
+                    <div class="col-10 text-left font-weight-bold">
+                        <div class="row">
+                            <div class="col-12 mb-3">@Model.Client.Name.First().Data</div>
+                        </div>
+                        @foreach (var address in Model.Client.Address)
+                        {
+                            <div class="row">
+                                <div class="col-12">@address.Data</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        Phone:
+                        <span class="font-weight-bold pl-4">@Model.Client.ConsultationNumber</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table mt-4 table-hover border-dark border">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="text-center">№</th>
+                <th scope="col" class="text-center text-nowrap">Product ID</th>
+                <th scope="col" class="text-center">Description</th>
+                <th scope="col" class="text-center">Unit</th>
+                <th scope="col" class="text-center">Quantity</th>
+                <th scope="col" class="text-center text-nowrap">Unit Price</th>
+                <th scope="col" class="text-center">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in @Model.Products)
+            {
+                <tr class="border-dark border">
+                    <td class="text-center border-dark border">@product.ProductID</td>
+                    <td class="text-center border-dark border">@product.Code</td>
+                    <td class="text-left border-dark border">@product.Description</td>
+                    <td class="text-center border-dark border">Item</td>
+                    <td class="text-right border-dark border">@product.Quantity.ToString("F2")</td>
+                    <td class="text-right border-dark border">@product.PriceWithDiscout.ToString("F3")</td>
+                    <td class="text-right border-dark border">@product.TotalAmount.ToString("F2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr class="border-dark border-bottom" />
+
+    <div class="col-5 offset-7 font-weight-bold">
+        @{
+            var totalAmount = @Model.Products.Sum(p => p.TotalAmount);
+            var vatAmount = totalAmount * Model.Vat / 100;
+            var allAmount = totalAmount + vatAmount;
+            <div class="row">
+                <div class="col-6 text-right">Subtotal:</div>
+                <div class="col-6 text-right">@totalAmount.ToString("F2")</div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-right">VAT:</div>
+                <div class="col-6 text-right">@vatAmount.ToString("F2")</div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-right">Currency:</div>
+                <div class="col-6 text-right">EUR</div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-right">Total:</div>
+                <div class="col-6 text-right">@allAmount.ToString("F2")</div>
+            </div>
+        }
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-2 font-weight-bold">Deal Details:</div>
+            <div class="col-10 pl-0"></div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-2 font-weight-bold">Bank Details:</div>
+            <div class="col-10 pl-0"></div>
+        </div>
+        @{ var paymentDetails = Model.Distributor.PaymentDetails.First();}
+        <div class="row">
+            <div class="col-2">Bank:</div>
+            <div class="col-10 pl-0 font-weight-bold">@paymentDetails.BankName</div>
+        </div>
+        <div class="row">
+            <div class="col-2">IBAN:</div>
+            <div class="col-10 pl-0">@paymentDetails.IBAN</div>
+        </div>
+        <div class="row">
+            <div class="col-2">Bank code:</div>
+            <div class="col-10 pl-0">@paymentDetails.BankCode</div>
+        </div>
+    </div>
+
+    <div class="mt-2 text-center">Thank you for your business!</div>
+</div>

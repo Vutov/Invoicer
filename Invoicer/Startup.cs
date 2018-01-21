@@ -37,6 +37,7 @@ namespace Invoicer
             services.AddTransient<ISeedService, SeedService>();
             services.AddTransient<IInvoiceService, InvoiceService>();
             services.AddTransient<IVatService, VatService>();
+            services.AddTransient<IConverterService, ConverterService>();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

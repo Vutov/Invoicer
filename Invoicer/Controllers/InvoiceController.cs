@@ -26,7 +26,7 @@ namespace Invoicer.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            var invoice = this.DbContext.Invoices.Skip(1)
+            var invoice = this.DbContext.Invoices.Skip(2)
                 .Include(d => d.Products)
                 .Include(d => d.Client)
                 .Include(d => d.Client.Name)
@@ -40,7 +40,7 @@ namespace Invoicer.Controllers
 
             var model = new InvoiceViewModel()
             {
-                Products = invoice.Products,
+                Products = invoice.Products.OrderBy(p => p.ProductID),
                 Client = invoice.Client,
                 Distributor = invoice.Distributor, // fix
                 InvoiceDate = DateTime.UtcNow, // fix
@@ -87,7 +87,7 @@ namespace Invoicer.Controllers
         [Route("Create")]
         public IActionResult Create()
         {
-            Stream stream = System.IO.File.Open("../xxx2.DOCX", FileMode.Open);
+            Stream stream = System.IO.File.Open("../xxx.DOCX", FileMode.Open);
             // TODO DI
             var invoiceService = new InvoiceService(new VatService());
             var invoice = invoiceService.CreateInvoice(stream);

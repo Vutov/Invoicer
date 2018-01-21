@@ -1,5 +1,7 @@
 ﻿@using Invoicer.Models.DbModels
 @using Invoicer.Models.ViewModels.InvoiceViewModels
+@using Invoicer.Services
+@inject IConverterService ConverterService
 @model InvoiceViewModel
 @{
     string GetIdentityNumber(string identity)
@@ -221,8 +223,8 @@
         }
     </div>
     <div class="row mt-4">
-        <div class="col-1 font-weight-bold">Словом:</div>
-        <div class="col-11 alert-danger">TODO</div>
+        <div class="col-1 font-weight-bold pt-2">Словом:</div>
+        <div class="col-11">@Html.TextBox("AmountWords", ConverterService.NumberToWords(totalAmount), new { @class = "form-control seemless-control" })</div>
     </div>
     <div class="container mt-2 border border-dark">
 
@@ -232,7 +234,7 @@
         <div class="row">
             <div class="col-7">
                 <div class="row">
-                    <div class="col-5 text-left">Дата на данъчно събитие:</div>
+                    <div class="col-5 text-left pr-0">Дата на данъчно събитие:</div>
                     <div class="col-7 text-left">@Model.InvoiceDate.ToString("dd.MM.yyyy")</div>
                 </div>
             </div>

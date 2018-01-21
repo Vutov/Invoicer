@@ -27,3 +27,14 @@
     -webkit-flex-basis: 49%;
     flex-basis: 49%;
 }
+
+.seemless-control {
+    border: 1px solid white;
+    box-shadow: none;
+    color: black;
+}
+
+    .seemless-control:hover {
+        border: 1px solid lightblue;
+        box-shadow: none;
+    }
