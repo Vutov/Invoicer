@@ -9,6 +9,8 @@ namespace Invoicer.Controllers
     using System.Text.RegularExpressions;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.EntityFrameworkCore;
+    using Models.BindingModels;
+    using Models.DbModels;
     using Models.ViewModels.InvoiceViewModels;
     using Services;
     using WkWrap.Core;
@@ -81,6 +83,17 @@ namespace Invoicer.Controllers
             var pdfBytes = converter.ConvertToPdf(html, Encoding.UTF8, settings);
             string result = System.Text.Encoding.UTF8.GetString(pdfBytes);
             return File(pdfBytes, "application/pdf", "magic.pdf");
+        }
+
+        [HttpPut]
+        [Route("Client/Update")]
+        // TODO: [AutoValidateAntiforgeryToken]
+        // TODO Check if valid model
+        public IActionResult UpdateClient([Bind("ID,Vat")] Client model)
+        {
+            this.DbContext.Clients.Update(model);
+            this.DbContext.SaveChanges();
+            return this.Ok();
         }
 
         [HttpGet]

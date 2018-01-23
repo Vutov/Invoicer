@@ -35,7 +35,9 @@
     <button id="btnSaveBg" type="button" class="btn btn-primary">Save</button>
 }
 
+
 <div id="invoiceBg" class="container border">
+    @Html.AntiForgeryToken()
     <h1 class="text-center font-weight-bold">Фактура</h1>
     <div class="holder">
         <h2 class="text-center copy-size">Копие</h2>
@@ -52,6 +54,10 @@
     </div>
 
     <div class="container mt-3">
+        @Html.Hidden("ClientUri", @Url.Action("UpdateClient", "Invoice"))
+        @Html.HiddenFor(m => m.Client.ID)
+        <button id="updateClient" type="button" class="btn">Save</button>
+
         <div class="row justify-content-between">
             <div class="col-6 border-dark border-right border-left smaller-flex border-top rounded-top">
                 <div class="row">
@@ -80,7 +86,7 @@
             <div class="col-6 border-dark border-right border-left smaller-flex">
                 <div class="row">
                     <div class="col-3">ДДС №</div>
-                    <div class="col-9">@Model.Client.Vat</div>
+                    <div class="col-9">@Html.TextBoxFor(m => m.Client.Vat, null, new { @class = "form-control seemless-control p-0" })</div>
                 </div>
             </div>
             <div class="col-6 border-dark border-right border-left smaller-flex">
