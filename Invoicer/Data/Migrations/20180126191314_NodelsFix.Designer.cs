@@ -13,9 +13,10 @@ using System;
 namespace Invoicer.Data.Migrations
 {
     [DbContext(typeof(InvoiceDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180126191314_NodelsFix")]
+    partial class NodelsFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,8 +225,6 @@ namespace Invoicer.Data.Migrations
                     b.Property<string>("Data");
 
                     b.Property<int?>("DistributorID");
-
-                    b.Property<int>("Language");
 
                     b.HasKey("ID");
 

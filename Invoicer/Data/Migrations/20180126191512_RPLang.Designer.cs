@@ -13,9 +13,10 @@ using System;
 namespace Invoicer.Data.Migrations
 {
     [DbContext(typeof(InvoiceDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180126191512_RPLang")]
+    partial class RPLang
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

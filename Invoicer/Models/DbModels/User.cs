@@ -11,5 +11,7 @@
         }
 
         public virtual ICollection<Invoice> Invoices { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
+        public virtual ICollection<Distributor> Distributors { get; set; }
     }
 }

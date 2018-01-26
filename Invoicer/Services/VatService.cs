@@ -58,17 +58,16 @@
             var client = new Client
             {
                 Vat = vat,
-                EnterManualy = !isValid,
                 RequestDate = Convert.ToDateTime(GetValue("Date when request received"))
             };
 
             if (isValid)
             {
-                client.Name = new List<Name>(){new Name(){Data = GetValue("Name") } };
-                client.Address = GetValue("Address")
+                client.Name = GetValue("Name");
+                var address = GetValue("Address")
                     .Split("<br>", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(d => new Address() { Data = d })
                     .ToList();
+                client.Address = string.Join('|', address);
                 client.ConsultationNumber = GetValue("Consultation Number");
             }
 

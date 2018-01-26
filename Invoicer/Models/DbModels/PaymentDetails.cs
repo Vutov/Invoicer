@@ -10,7 +10,7 @@
         public string IBAN { get; set; }
         public string BankName { get; set; }
         public string BankCode { get; set; }
-        public Distributor Client { get; set; }
+        public Distributor Distributor { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationDate { get; set; }
     }

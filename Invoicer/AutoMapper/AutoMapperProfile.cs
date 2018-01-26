@@ -1,8 +1,11 @@
 ﻿namespace Invoicer.AutoMapper
 {
+    using System;
+    using System.Linq;
     using global::AutoMapper;
     using Models.DbModels;
     using Models.DocModels;
+    using Models.ViewModels.InvoiceViewModels;
 
     public class AutoMapperProfile : Profile
     {
@@ -13,6 +16,12 @@
                 .ForMember(x => x.ID, opts => opts.Ignore());
 
             this.CreateMap<Distributor, Client>();
+            this.CreateMap<Client, ClientViewModel>()
+                .ForMember(x => x.Address, opts => opts.MapFrom(
+                    x => x.Address
+                        .Split('|', StringSplitOptions.RemoveEmptyEntries)
+                        .ToList()
+                ));
         }
     }
 }

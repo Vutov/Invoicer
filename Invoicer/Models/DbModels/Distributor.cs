@@ -26,5 +26,6 @@ namespace Invoicer.Models.DbModels
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<ResponsiblePerson> Responsibles { get; set; }
         public virtual ICollection<PaymentDetail> PaymentDetails { get; set; }
+        public User CreatedBy { get; set; }
     }
 }

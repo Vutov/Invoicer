@@ -10,5 +10,6 @@ namespace Invoicer.Models.DbModels
         public string Data { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationDate { get; set; }
+        public LanguageEnum Language { get; set; }
     }
 }

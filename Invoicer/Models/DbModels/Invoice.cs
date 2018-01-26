@@ -23,5 +23,7 @@
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreationDate { get; set; }
         public User CreatedBy { get; set; }
+        public int InvoiceNumber { get; set; }
+        public DateTime InvoiceDate { get; set; }
     }
 }

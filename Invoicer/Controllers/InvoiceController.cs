@@ -7,9 +7,9 @@ namespace Invoicer.Controllers
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
+    using global::AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.EntityFrameworkCore;
-    using Models.BindingModels;
     using Models.DbModels;
     using Models.ViewModels.InvoiceViewModels;
     using Services;
@@ -28,11 +28,9 @@ namespace Invoicer.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            var invoice = this.DbContext.Invoices.Skip(2)
+            var invoice = this.DbContext.Invoices
                 .Include(d => d.Products)
                 .Include(d => d.Client)
-                .Include(d => d.Client.Name)
-                .Include(d => d.Client.Address)
                 .Include(d => d.Distributor)
                 .Include(d => d.Distributor.Name)
                 .Include(d => d.Distributor.Address)
@@ -43,7 +41,7 @@ namespace Invoicer.Controllers
             var model = new InvoiceViewModel()
             {
                 Products = invoice.Products.OrderBy(p => p.ProductID),
-                Client = invoice.Client,
+                Client = Mapper.Map<Client, ClientViewModel>(invoice.Client),
                 Distributor = invoice.Distributor, // fix
                 InvoiceDate = DateTime.UtcNow, // fix
                 InvoiceNumber = 1, //fix

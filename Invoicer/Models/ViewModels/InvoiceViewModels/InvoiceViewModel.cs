@@ -9,7 +9,7 @@
     {
         public int InvoiceNumber { get; set; }
         public DateTime InvoiceDate { get; set; }
-        public Client Client { get; set; }
+        public ClientViewModel Client { get; set; }
         public Distributor Distributor { get; set; }
         public IEnumerable<Product> Products { get; set; }
         public double Vat { get; set; }

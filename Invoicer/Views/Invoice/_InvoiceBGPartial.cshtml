@@ -15,16 +15,16 @@
         return i;
     }
 
-    (string, string) GetAddressLines(List<Address> address)
+    (string, string) GetAddressLines(IList<string> address)
     {
         var hasTown = address.Count > 1;
         var skip = hasTown ? 1 : 0;
         var town = string.Empty;
         if (hasTown)
         {
-            town = address.FirstOrDefault()?.Data;
+            town = address.FirstOrDefault();
         }
-        return (town, string.Join(",", address.Skip(skip).Select(d => d.Data).ToList()));
+        return (town, string.Join(",", address.Skip(skip).ToList()));
     }
 }
 
@@ -63,10 +63,7 @@
                 <div class="row">
                     <div class="col-3">Получател</div>
                     <div class="col-9">
-                        @foreach (var name in @Model.Client.Name)
-                        {
-                            <div>@name.Data</div>
-                        }
+                        <div>@Html.TextBoxFor(Model.Client.Name, null, new { @class = "form-control seemless-control p-0" })</div>
                     </div>
                 </div>
             </div>
@@ -86,7 +83,7 @@
             <div class="col-6 border-dark border-right border-left smaller-flex">
                 <div class="row">
                     <div class="col-3">ДДС №</div>
-                    <div class="col-9">@Html.TextBoxFor(m => m.Client.Vat, null, new { @class = "form-control seemless-control p-0" })</div>
+                    <div class="col-9">@Model.Client.Vat</div>
                 </div>
             </div>
             <div class="col-6 border-dark border-right border-left smaller-flex">
@@ -113,12 +110,12 @@
         <div class="row justify-content-between">
             @{
                 var clientAddress = GetAddressLines(@Model.Client.Address.ToList());
-                var distributorAddress = GetAddressLines(@Model.Distributor.Address.ToList());
+                var distributorAddress = GetAddressLines(@Model.Distributor.Address.Select(a => a.Data).ToList());
             }
             <div class="col-6 border-dark border-right border-left smaller-flex">
                 <div class="row">
                     <div class="col-3">Град</div>
-                    <div class="col-9">@clientAddress.Item1</div>
+                    <div class="col-9">@Html.TextBox("Client_Address1", clientAddress.Item1, new { @class = "form-control seemless-control p-0" })</div>
                 </div>
             </div>
             <div class="col-6 border-dark border-right border-left smaller-flex">
@@ -132,7 +129,7 @@
             <div class="col-6 border-dark border-right border-left smaller-flex">
                 <div class="row">
                     <div class="col-3">Адрес</div>
-                    <div class="col-9">@clientAddress.Item2</div>
+                    <div class="col-9">@Html.TextBox("Client_Address2", clientAddress.Item2, new { @class = "form-control seemless-control p-0" })</div>
                 </div>
             </div>
             <div class="col-6 border-dark border-right border-left smaller-flex">
@@ -147,10 +144,7 @@
                 <div class="row">
                     <div class="col-3">МОЛ</div>
                     <div class="col-9">
-                        @foreach (var person in @Model.Client.Responsibles)
-                        {
-                            <div>@person.Data</div>
-                        }
+                        <div>@Html.TextBoxFor(m => m.Client.ResponsiblePerson, null, new { @class = "form-control seemless-control p-0" })</div>
                     </div>
                 </div>
             </div>
@@ -170,7 +164,7 @@
             <div class="col-6 border-dark border-right border-left smaller-flex border-bottom rounded-bottom">
                 <div class="row">
                     <div class="col-3">Телефон</div>
-                    <div class="col-9">@Model.Client.ConsultationNumber</div>
+                    <div class="col-9">@Html.TextBoxFor(m => m.Client.ConsultationNumber, null, new { @class = "form-control seemless-control p-0" })</div>
                 </div>
             </div>
             <div class="col-6 border-dark border-right border-left smaller-flex border-bottom rounded-bottom">
@@ -300,10 +294,7 @@
             <div class="row">
                 <div class="col-2 text-left">Получил:</div>
                 <div class="col-10 text-left">
-                    @foreach (var person in @Model.Client.Responsibles)
-                    {
-                        <div>@person.Data</div>
-                    }
+                    <div>@Model.Client.ResponsiblePerson</div>
                 </div>
             </div>
         </div>
